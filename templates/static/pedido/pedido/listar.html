@@ -1,9 +1,0 @@
-<h2>Meus Pedidos</h2>
-<ul>
-    {% for pedido in pedidos %}
-        <li>
-            Pedido {{ pedido.id }} - Status: {{ pedido.status }}
-            <a href="{% url 'detalhes_pedido' pedido.id %}">Ver</a>
-        </li>
-    {% endfor %}
-</ul>

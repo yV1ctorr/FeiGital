@@ -13,8 +13,4 @@ urlpatterns = [
     path('adicionar/', AdicionarProduto.as_view(),name='criar_produto'),
     path('editar/<int:id>', EditarProduto.as_view(), name='editar_produto'),
     path('deletar/<int:id>', DeletarProduto.as_view, name='deletar_produto'),
-
-    path('login/', login_view, name='login'),
-    path('cadastro/', cadastro_view, name='cadastro'),
-    path('logout/', logout_view, name='logout'),
 ]
