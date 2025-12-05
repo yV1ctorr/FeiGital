@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-
-from .models import Produto, Cart, CartItem
+from django.views.generic import ListView, CreateView, DeleteView, UpdateView
+from django.urls import reverse_lazy
+from .models import *
 from .forms import ProdutoForm
 
 
@@ -9,45 +10,31 @@ from .forms import ProdutoForm
 #  PRODUTOS (CRUD)
 # -------------------------
 
-def lista_produtos(request):
-    produtos = Produto.objects.all()
-    return render(request, 'produtos/lista.html', {'produtos': produtos})
+class ListarProdutos(ListView):
+    model = Produto
+    context_object_name = 'produtos'
+    template_name = 'produto/listar.html'
 
 
-def criar_produto(request):
-    if request.method == 'POST':
-        form = ProdutoForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            return redirect('lista_produtos')
-    else:
-        form = ProdutoForm()
-
-    return render(request, 'produtos/form.html', {'form': form})
+class AdicionarProduto(CreateView):
+    model = Produto
+    form_class = ProdutoForm
+    success_url = reverse_lazy('/produtos/listar')
+    template_name = 'produto/adicionar.html'
 
 
-def editar_produto(request, id):
-    produto = get_object_or_404(Produto, id=id)
-
-    if request.method == 'POST':
-        form = ProdutoForm(request.POST, request.FILES, instance=produto)
-        if form.is_valid():
-            form.save()
-            return redirect('lista_produtos')
-    else:
-        form = ProdutoForm(instance=produto)
-
-    return render(request, 'produtos/form.html', {'form': form})
+class EditarProduto(UpdateView):
+    model = Produto
+    form_class = ProdutoForm
+    success_url = reverse_lazy('/produtos/listar')
+    template_name = 'produto/editar.html'
 
 
-def deletar_produto(request, id):
-    produto = get_object_or_404(Produto, id=id)
-
-    if request.method == 'POST':
-        produto.delete()
-        return redirect('lista_produtos')
-
-    return render(request, 'produtos/confirmar_delete.html', {'produto': produto})
+class DeletarProduto(DeleteView):
+    model = Produto
+    context_object_name = 'produtos'
+    success_url = reverse_lazy('/produtos/listar')
+    template_name = 'produto/deletar.html'
 
 
 # -------------------------

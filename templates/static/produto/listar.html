@@ -1,0 +1,14 @@
+{% load static %}
+<h1>Produtos</h1>
+
+<ul>
+    {% for p in produtos %}
+        <li>
+            <img src="{ produto.imagem.url }">
+            {{ p.nome }} - R$ {{ p.preco }}
+            <button><a href="{% url 'editar_produto' p.id %}">Editar</a></button>
+            <button><a href="{% url 'deletar_produto' p.id %}">Deletar</a></button>
+        </li>
+    {% endfor %}
+    <button><a href="{% url 'criar_produto' %}">Adicionar Produto</a></button>
+</ul>
