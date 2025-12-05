@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+</head>
+<body>
+<h1>Bem-vindo, {{ user.username }}!</h1>
+ 
+<!-- Logout via POST -->
+<form action="{% url 'logout' %}" method="post">
+    {% csrf_token %}
+    <button type="submit">Sair (via botão)</button>
+</form>
+</body>
+</html>
+ 

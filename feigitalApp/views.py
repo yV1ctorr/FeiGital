@@ -4,6 +4,40 @@ from django.contrib.auth.decorators import login_required
 from .models import Produto, Cart, CartItem
 from .forms import ProdutoForm
 
+# -------------------------
+#  PERFIL
+# -------------------------
+
+from django.contrib.auth.decorators import login_required
+from .forms import UserUpdateForm
+
+@login_required
+def perfil(request):
+    return render(request, 'perfil.html')
+
+# -------------------------
+#  EDITAR PERFIL
+# -------------------------
+
+@login_required
+def editar_perfil(request):
+    if request.method == 'POST':
+        form = UserUpdateForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect('perfil')
+    else:
+        form = UserUpdateForm(instance=request.user)
+
+    return render(request, 'editar_perfil.html', {'form': form})
+
+# -------------------------
+#  DASHBOARD
+# -------------------------
+
+@login_required
+def dashboard(request):
+    return render(request, 'dashboard.html')
 
 # -------------------------
 #  PRODUTOS (CRUD)
