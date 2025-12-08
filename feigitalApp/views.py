@@ -1,15 +1,17 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, CreateView, DeleteView, UpdateView
 from django.urls import reverse_lazy
 from .models import *
-from .forms import ProdutoForm
+from .forms import *
+
+# USUARIO
+class CadastroUsuario(UsuarioForm):
+    model = Usuario
+    
 
 
-# -------------------------
-#  PRODUTOS (CRUD)
-# -------------------------
-
+#PRODUTOS
 class ListarProdutos(ListView):
     model = Produto
     context_object_name = 'produtos'
@@ -37,10 +39,7 @@ class DeletarProduto(DeleteView):
     template_name = 'produto/deletar.html'
 
 
-# -------------------------
-#  CARRINHO
-# -------------------------
-
+#CARRINHO
 @login_required
 def add_to_cart(request, produto_id):
     produto = Produto.objects.get(id=produto_id)
