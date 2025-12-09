@@ -88,3 +88,9 @@ def limpar_carrinho(request):
     cart = Cart.objects.get(user=request.user)
     cart.items.all().delete()
     return redirect('ver_carrinho')
+
+
+from django.shortcuts import render
+
+def home(request):
+    return render(request, "feigitalApp/home.html")
