@@ -5,13 +5,18 @@ from django.urls import reverse_lazy
 from .models import *
 from .forms import *
 
+# HOME
+def home(request):
+    return render(request, "home.html")
+
+
 # USUARIO
-class CadastroUsuario(UsuarioForm):
-    model = Usuario
+# class CadastroUsuario(UsuarioForm):
+#     model = Usuario
     
 
 
-#PRODUTOS
+# PRODUTOS
 class ListarProdutos(ListView):
     model = Produto
     context_object_name = 'produtos'
@@ -39,7 +44,7 @@ class DeletarProduto(DeleteView):
     template_name = 'produto/deletar.html'
 
 
-#CARRINHO
+# CARRINHO
 @login_required
 def add_to_cart(request, produto_id):
     produto = Produto.objects.get(id=produto_id)
@@ -88,9 +93,3 @@ def limpar_carrinho(request):
     cart = Cart.objects.get(user=request.user)
     cart.items.all().delete()
     return redirect('ver_carrinho')
-
-
-from django.shortcuts import render
-
-def home(request):
-    return render(request, "feigitalApp/home.html")
