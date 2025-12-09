@@ -1,22 +1,29 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import LoginView
 from django.views.generic import ListView, CreateView, DeleteView, UpdateView
 from django.urls import reverse_lazy
 from .models import *
 from .forms import *
 
 # USUARIO
-class CadastroUsuario(UsuarioForm):
+class CadastroUsuario(CreateView):
     model = Usuario
-    
+    form_class = UsuarioForm
+    template_name = 'usuario/cadastro.html'
+    succes_url = reverse_lazy('login_usuario')
+
+# class LoginUsuario(LoginView):
+#     template_name = 'usuario/login.html'
+#     redirect_authenticated_user = True
+
 
 
 #PRODUTOS
-class ListarProdutos(ListView):
+class ListarProduto(ListView):
     model = Produto
     context_object_name = 'produtos'
     template_name = 'produto/listar.html'
-
 
 class AdicionarProduto(CreateView):
     model = Produto
@@ -24,13 +31,11 @@ class AdicionarProduto(CreateView):
     success_url = reverse_lazy('/produtos/listar')
     template_name = 'produto/adicionar.html'
 
-
 class EditarProduto(UpdateView):
     model = Produto
     form_class = ProdutoForm
     success_url = reverse_lazy('/produtos/listar')
     template_name = 'produto/editar.html'
-
 
 class DeletarProduto(DeleteView):
     model = Produto
@@ -56,7 +61,6 @@ def add_to_cart(request, produto_id):
     item.save()
     return redirect('ver_carrinho')
 
-
 @login_required
 def ver_carrinho(request):
     cart, created = Cart.objects.get_or_create(user=request.user)
@@ -66,7 +70,6 @@ def ver_carrinho(request):
         'total': cart.total()
     })
 
-
 @login_required
 def atualizar_item(request, item_id):
     item = CartItem.objects.get(id=item_id)
@@ -75,13 +78,11 @@ def atualizar_item(request, item_id):
     item.save()
     return redirect('ver_carrinho')
 
-
 @login_required
 def remover_item(request, item_id):
     item = CartItem.objects.get(id=item_id)
     item.delete()
     return redirect('ver_carrinho')
-
 
 @login_required
 def limpar_carrinho(request):
