@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView, LogoutView
 from django.views.generic import ListView, CreateView, DeleteView, UpdateView
 from django.urls import reverse_lazy
 from .models import *
@@ -11,12 +11,25 @@ class CadastroUsuario(CreateView):
     model = Usuario
     form_class = UsuarioForm
     template_name = 'usuario/cadastro.html'
-    succes_url = reverse_lazy('login_usuario')
+    success_url = reverse_lazy('login_usuario')
 
-# class LoginUsuario(LoginView):
-#     template_name = 'usuario/login.html'
-#     redirect_authenticated_user = True
+class LoginUsuario(LoginView):
+    template_name = 'usuario/login.html'
+    redirect_authenticated_user = True
 
+    def get_success_url(self):
+        user = self.request.user
+
+        if user.tipo == 'feirante':
+            return reverse_lazy('cadastrar_produto')
+
+        if user.tipo == 'cliente':
+            return reverse_lazy('listar_produto')
+        
+        return reverse_lazy('login_usuario')
+
+# class LogoutUsuario(LogoutView):
+#     next_page = reverse_lazy('login_usuario')
 
 
 #PRODUTOS
@@ -28,19 +41,20 @@ class ListarProduto(ListView):
 class AdicionarProduto(CreateView):
     model = Produto
     form_class = ProdutoForm
-    success_url = reverse_lazy('/produtos/listar')
+    success_url = reverse_lazy('listar_produto')
     template_name = 'produto/adicionar.html'
 
 class EditarProduto(UpdateView):
     model = Produto
     form_class = ProdutoForm
-    success_url = reverse_lazy('/produtos/listar')
+    context_object_name = 'produtos'
+    success_url = reverse_lazy('listar_produto')
     template_name = 'produto/editar.html'
 
 class DeletarProduto(DeleteView):
     model = Produto
     context_object_name = 'produtos'
-    success_url = reverse_lazy('/produtos/listar')
+    success_url = reverse_lazy('listar_produto')
     template_name = 'produto/deletar.html'
 
 

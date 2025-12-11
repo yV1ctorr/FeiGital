@@ -3,6 +3,3 @@ __pycache__/
 *.pyc
 .vscode/
 *.log
-db.sqlite3.copy
-viewsSerializer.py
-serializer.py

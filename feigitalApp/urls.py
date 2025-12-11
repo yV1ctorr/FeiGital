@@ -4,12 +4,13 @@ from .views import *
 
 urlpatterns = [
     path('cadastro/', CadastroUsuario.as_view(), name='cadastro_usuario'),
-    # path('login/', LoginUsuario.as_view(), name='login_usuario'),
+    path('login/', LoginUsuario.as_view(), name='login_usuario'),
+    # path('logout/', LogoutUsuario.as_view(), name='logout_usuario'),
 
-    path('listar/', ListarProduto.as_view(), name='listar_produtos'),
+    path('listar/', ListarProduto.as_view(), name='listar_produto'),
     path('adicionar/', AdicionarProduto.as_view(),name='criar_produto'),
-    path('editar/<int:id>', EditarProduto.as_view(), name='editar_produto'),
-    path('deletar/<int:id>', DeletarProduto.as_view(), name='deletar_produto'),
+    path('editar/<int:pk>/', EditarProduto.as_view(), name='editar_produto'),
+    path('deletar/<int:pk>/', DeletarProduto.as_view(), name='deletar_produto'),
 
     path('carrinho/', ver_carrinho, name='ver_carrinho'),
     path('carrinho/add/<int:produto_id>/', add_to_cart, name='add_to_cart'),
