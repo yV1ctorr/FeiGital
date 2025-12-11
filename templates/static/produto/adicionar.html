@@ -1,18 +1,109 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="pt-br">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Adicionar produto</title>
-    </head>
-    <body>
-        <h1>Adicionar Produto</h1>
-        <form  method="POST">{% csrf_token %} 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adicionar Produto</title>
+    <style>
+        /* Estilos simples para deixar a página agradável */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        /* Estilizando os campos do Django (form.as_p) */
+        form p {
+            margin-bottom: 15px;
+        }
+
+        form label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        /* Tenta pegar inputs de texto gerados pelo Django */
+        input[type="text"], 
+        input[type="number"], 
+        input[type="email"], 
+        textarea, 
+        select {
+            width: 100%; /* Ocupa a largura toda */
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box; /* Garante que o padding não quebre o layout */
+        }
+
+        /* Botão de salvar */
+        .btn-save {
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .btn-save:hover {
+            background-color: #218838;
+        }
+
+        /* Link de voltar */
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            text-decoration: none;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .back-link:hover {
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Novo Produto</h1>
+        
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %} 
             
             {{ form.as_p }}
 
-            <button type="submit">Salvar</button>
+            <button type="submit" class="btn-save">Salvar Produto</button>
         </form>
-    </body>
+
+        <a href="/" class="back-link">Cancelar e Voltar</a>
+    </div>
+
+</body>
 </html>
