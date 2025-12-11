@@ -6,6 +6,11 @@ from django.urls import reverse_lazy
 from .models import *
 from .forms import *
 
+# HOME
+def home(request):
+    return render(request, "home.html")
+
+
 # USUARIO
 class CadastroUsuario(CreateView):
     model = Usuario
@@ -58,7 +63,7 @@ class DeletarProduto(DeleteView):
     template_name = 'produto/deletar.html'
 
 
-#CARRINHO
+# CARRINHO
 @login_required
 def add_to_cart(request, produto_id):
     produto = Produto.objects.get(id=produto_id)
