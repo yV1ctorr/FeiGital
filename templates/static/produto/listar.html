@@ -1,13 +1,24 @@
 {% load static %}
-<h1>Produtos</h1>
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Produtos</title>
+</head>
+<body>
+    <h1>Produtos</h1>
 
-<ul>
-    {% for p in produtos %}
-        <li>
-            <img src="{ produto.imagem.url }">
-            {{ p.nome }} - R$ {{ p.preco }}
-            <button><a href="{% url 'editar_produto' p.id %}">Editar</a></button>
-            <button><a href="{% url 'deletar_produto' p.id %}">Deletar</a></button>
-        </li>
-    {% endfor %}
-</ul>
+    <ul>
+        {% for p in produtos %}
+            <li>
+                <img src="{ p.img }">
+                {{ p.nome }} - R$ {{ p.preco }}
+                <button><a href="{% url 'editar_produto' p.pk %}">Editar</a></button>
+                <button><a href="{% url 'deletar_produto' p.pk %}">Deletar</a></button>
+            </li>
+        {% endfor %}
+        <button><a href="{% url 'criar_produto' %}">Adicionar Produto</a></button>
+    </ul>
+</body>
+</html>

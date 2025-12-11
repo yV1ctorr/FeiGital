@@ -13,8 +13,8 @@ class Produto(models.Model):
     nome = models.CharField(max_length=50)
     preco = models.DecimalField(max_digits=8, decimal_places=2)
     validade = models.DateField()
-    # banca = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name="produtos")
-    img = models.ImageField(upload_to='produto/img', blank=True, null=True)
+    banca = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name="produtos")
+    img = models.ImageField(upload_to='/media', blank=True, null=True)
 
     def __str__(self):
         return self.nome
