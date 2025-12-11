@@ -7,8 +7,8 @@ class ProdutoForm(forms.ModelForm):
         model = Produto
         fields = ['nome', 'preco', 'validade',  'img']
  
-# class UsuarioForm(UserCreationForm):
-#     email = forms.EmailField(required=True)
-#     class Meta:
-#         model = Usuario
-#         fields = ['username', 'email', 'tipo', 'password1', 'password2']
+class UsuarioForm(UserCreationForm):
+    email = forms.EmailField(required=True)
+    class Meta:
+        model = Usuario
+        fields = ['username', 'email', 'tipo', 'password1', 'password2']
