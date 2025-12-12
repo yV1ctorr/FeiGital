@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Pedido Realizado - FeiGital{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 text-center">
+            <div class="card shadow">
+                <div class="card-body p-5">
+                    <h1 class="text-success mb-4">Pedido #{{ pedido.id }} Realizado!</h1>
+                    
+                    <div class="my-4 p-3 border rounded d-inline-block bg-light">
+                        <h5 class="mb-3">QR Code para Retirada</h5>
+                        {% if qr_code %}
+                            <img src="data:image/png;base64,{{ qr_code }}" alt="QR Code do Pedido" class="img-fluid" style="max-width: 250px;">
+                        {% else %}
+                            <p class="text-danger">Erro ao gerar QR Code.</p>
+                        {% endif %}
+                        <p class="text-muted mt-2 mb-0">Apresente este código ao feirante.</p>
+                    </div>
+
+                    <div class="row text-start mt-4">
+                        <div class="col-md-6">
+                            <p><strong>Status:</strong> <span class="badge bg-warning text-dark">{{ pedido.get_status_display }}</span></p>
+                            <p><strong>Valor Total:</strong> <span class="fs-5 text-primary">R$ {{ pedido.valor_total }}</span></p>
+                        </div>
+                        <div class="col-md-12">
+                            <h5 class="mt-3">Itens do Pedido:</h5>
+                            <ul class="list-group">
+                                {% for item in pedido.itens.all %}
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        {{ item.quantidade }}x {{ item.produto.nome }}
+                                        <span class="text-muted small">(Banca: {{ item.produto.banca.username }})</span>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-5 d-flex gap-2 justify-content-center">
+                        <a href="{% url 'meus_pedidos' %}" class="btn btn-outline-primary">Meus Pedidos</a>
+                        <a href="{% url 'listar_produto' %}" class="btn btn-success">Voltar para Loja</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

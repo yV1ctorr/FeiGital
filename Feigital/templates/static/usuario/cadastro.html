@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}Cadastro - FeiGital{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="card shadow">
+                <div class="card-body p-4">
+                    <h2 class="text-center mb-4">Cadastrar Usuário</h2>
+                    
+                    <form method="POST" action="{% url 'cadastro_usuario' %}">
+                        {% csrf_token %}
+                        
+                        <div class="mb-3">
+                            {{ form.as_p }}
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-success btn-lg">Cadastrar</button>
+                        </div>
+                    </form>
+
+                    <div class="text-center mt-3">
+                        <p>Já tem conta? <a href="{% url 'login_usuario' %}">Faça login</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

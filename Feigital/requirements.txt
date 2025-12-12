@@ -1,0 +1,4 @@
+﻿Django==6.0
+django-extensions==3.2.3
+Pillow==10.4.0
+qrcode==8.2
