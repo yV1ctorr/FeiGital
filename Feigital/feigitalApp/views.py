@@ -192,7 +192,7 @@ def atualizar_status_pedido(request, pedido_id):
     if request.method == 'POST':
         pedido = Pedido.objects.get(id=pedido_id)
         
-        # Verify if this feirante has any item in this order
+        # Verifica se o feirante tem algum item em ordem
         has_item = ItemPedido.objects.filter(pedido=pedido, produto__banca=request.user).exists()
         
         if has_item:
