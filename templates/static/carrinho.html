@@ -1,0 +1,13 @@
+<h1>Carrinho</h1>
+
+{% for item in cart.items.all %}
+    <p>{{ item.produto.nome }} — {{ item.quantidade }}x</p>
+    <form method="POST" action="{% url 'atualizar_item' item.id %}">
+        {% csrf_token %}
+        <input type="number" name="quantidade" value="{{ item.quantidade }}" min="1">
+        <button type="submit">Atualizar</button>
+    </form>
+    <a href="{% url 'remover_item' item.id %}">Remover</a>
+{% endfor %}
+
+<p>Total: R$ {{ cart.total }}</p>
