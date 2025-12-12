@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Painel do Feirante - FeiGital{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Painel de Vendas</h2>
+        <a href="{% url 'criar_produto' %}" class="btn btn-success">Cadastrar Novo Produto</a>
+    </div>
+    
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card bg-primary text-white shadow">
+                <div class="card-body">
+                    <h5 class="card-title">Total Faturado</h5>
+                    <p class="card-text fs-2 fw-bold">R$ {{ total_vendas }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+             <div class="card bg-success text-white shadow">
+                <div class="card-body">
+                    <h5 class="card-title">Itens Vendidos</h5>
+                    <p class="card-text fs-2 fw-bold">{{ itens_vendidos.count }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h3 class="mb-3">Histórico de Itens Vendidos</h3>
+    <div class="card shadow">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Data</th>
+                            <th>Produto</th>
+                            <th>Qtd</th>
+                            <th>Valor Unit.</th>
+                            <th>Subtotal</th>
+                            <th>Cliente</th>
+                            <th>Status Pedido</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in itens_vendidos %}
+                        <tr>
+                            <td>{{ item.pedido.data_criacao|date:"d/m/Y H:i" }}</td>
+                            <td>{{ item.produto.nome }}</td>
+                            <td>{{ item.quantidade }}</td>
+                            <td>R$ {{ item.preco_unitario }}</td>
+                            <td class="fw-bold">R$ {{ item.subtotal }}</td>
+                            <td>{{ item.pedido.user.username }}</td>
+                            <td>
+                                <form action="{% url 'atualizar_status_pedido' item.pedido.id %}" method="POST" class="d-flex gap-2">
+                                    {% csrf_token %}
+                                    <select name="status" class="form-select form-select-sm" onchange="this.form.submit()">
+                                        {% for code, label in status_choices %}
+                                            <option value="{{ code }}" {% if item.pedido.status == code %}selected{% endif %}>
+                                                {{ label }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </form>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="7" class="text-center py-4 text-muted">Nenhuma venda realizada ainda.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <div class="mt-4">
+        <a href="{% url 'listar_produto' %}" class="btn btn-outline-primary">Ver Meus Produtos na Loja</a>
+    </div>
+</div>
+{% endblock %}

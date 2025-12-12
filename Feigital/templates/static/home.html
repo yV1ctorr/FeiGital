@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="hero mb-5">
+    <div class="container">
+        <h1 class="display-4 fw-bold">Bem-vindo ao FeiGital</h1>
+        <p class="lead">O melhor lugar para comprar e vender produtos frescos e de qualidade.</p>
+        <a href="{% url 'listar_produto' %}" class="btn btn-light btn-lg mt-3 fw-bold px-5">Explorar Ofertas</a>
+    </div>
+</div>
+
+<div class="container pb-5">
+    
+    <!-- Seção de Destaques (Vitrine) -->
+    <div class="mb-5">
+        <div class="d-flex justify-content-between align-items-end mb-4">
+            <h2 class="fw-bold text-dark">Últimas Novidades</h2>
+            <a href="{% url 'listar_produto' %}" class="text-decoration-none fw-bold">Ver tudo &rarr;</a>
+        </div>
+        
+        <div class="row g-4">
+            {% for p in produtos %}
+            <div class="col-md-3">
+                <div class="card h-100 border-0 shadow-sm">
+                    {% if p.img %}
+                        <img src="{{ p.img.url }}" class="card-img-top rounded-top" alt="{{ p.nome }}" style="height: 200px; object-fit: cover;">
+                    {% else %}
+                        <div class="d-flex align-items-center justify-content-center bg-light text-muted rounded-top" style="height: 200px;">
+                            <i class="bi bi-image fs-1"></i> Sem imagem
+                        </div>
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold text-truncate">{{ p.nome }}</h5>
+                        <p class="text-success fs-5 fw-bold mb-1">R$ {{ p.preco }}</p>
+                        <small class="text-muted d-block mb-3">Vendido por: {{ p.banca.username }}</small>
+                        
+                        <a href="{% url 'listar_produto' %}" class="btn btn-outline-primary w-100 stretched-link">Ver Detalhes</a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12">
+                <div class="alert alert-info text-center">
+                    Nenhum produto em destaque no momento.
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Ações Rápidas (Personalizadas) -->
+    <div class="row g-4 justify-content-center">
+        {% if user.is_authenticated %}
+            {% if user.tipo == 'feirante' %}
+                <div class="col-md-4">
+                    <div class="card border-0 shadow-sm h-100 text-center p-4 bg-light">
+                        <div class="card-body">
+                            <h3 class="mb-3">Painel de Vendas</h3>
+                            <p class="text-muted mb-4">Acompanhe suas vendas e gerencie seus produtos.</p>
+                            <a href="{% url 'dashboard_feirante' %}" class="btn btn-primary btn-lg w-100">Acessar Painel</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card border-0 shadow-sm h-100 text-center p-4 bg-success text-white">
+                        <div class="card-body">
+                            <h3 class="mb-3">Novo Produto</h3>
+                            <p class="mb-4 text-white-50">Cadastre novos itens para sua banca agora mesmo.</p>
+                            <a href="{% url 'criar_produto' %}" class="btn btn-light btn-lg w-100 text-success fw-bold">Cadastrar</a>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="col-md-4">
+                    <div class="card border-0 shadow-sm h-100 text-center p-4 bg-primary text-white">
+                        <div class="card-body">
+                            <h3 class="mb-3">Meu Carrinho</h3>
+                            <p class="mb-4 text-white-50">Finalize suas compras pendentes.</p>
+                            <a href="{% url 'ver_carrinho' %}" class="btn btn-light btn-lg w-100 text-primary fw-bold">Ver Carrinho</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card border-0 shadow-sm h-100 text-center p-4 bg-light">
+                        <div class="card-body">
+                            <h3 class="mb-3">Meus Pedidos</h3>
+                            <p class="text-muted mb-4">Acompanhe o status das suas compras.</p>
+                            <a href="{% url 'meus_pedidos' %}" class="btn btn-outline-primary btn-lg w-100">Histórico</a>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        {% else %}
+             <div class="col-md-6">
+                <div class="card border-0 shadow h-100 p-5 text-center bg-white">
+                    <h3 class="fw-bold mb-3">Comece agora!</h3>
+                    <p class="lead text-muted mb-4">Cadastre-se para comprar produtos frescos ou vender sua produção.</p>
+                    <div class="d-flex gap-3 justify-content-center">
+                        <a href="{% url 'login_usuario' %}" class="btn btn-outline-primary btn-lg px-4">Entrar</a>
+                        <a href="{% url 'cadastro_usuario' %}" class="btn btn-primary btn-lg px-4">Criar Conta</a>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+</div>
+{% endblock %}

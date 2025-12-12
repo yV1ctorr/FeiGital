@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load i18n static %}
+
+{% block title %}Administração - FeiGital{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-4">
+            <div class="card shadow border-0">
+                <div class="card-body p-5">
+                    <div class="text-center mb-4">
+                        <h2 class="fw-bold text-primary">FeiGital</h2>
+                        <h5 class="text-muted">Acesso Administrativo</h5>
+                    </div>
+                    
+                    {% if form.errors and not form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            {% if form.errors.items|length == 1 %}{% trans "Please correct the error below." %}{% else %}{% trans "Please correct the errors below." %}{% endif %}
+                        </div>
+                    {% endif %}
+
+                    {% if form.non_field_errors %}
+                        {% for error in form.non_field_errors %}
+                            <div class="alert alert-danger">
+                                {{ error }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+
+                    <form action="{{ app_path }}" method="post" id="login-form">{% csrf_token %}
+                        
+                        <div class="mb-3">
+                            <label for="id_username" class="form-label">Usuário</label>
+                            <input type="text" name="username" class="form-control" id="id_username" required autofocus>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="id_password" class="form-label">Senha</label>
+                            <input type="password" name="password" class="form-control" id="id_password" required>
+                        </div>
+                        
+                        <input type="hidden" name="next" value="{{ next }}">
+                        
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg">Entrar</button>
+                            <a href="/" class="btn btn-outline-secondary">Voltar para o Site</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
